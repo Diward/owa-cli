@@ -1,0 +1,40 @@
+{
+  "name": "owa-cli",
+  "version": "0.1.0",
+  "description": "CLI para leer tu correo de Outlook (Microsoft 365) y dejar borradores usando tu sesión de Outlook Web en Edge, sin Microsoft Graph",
+  "keywords": [
+    "outlook",
+    "owa",
+    "microsoft-365",
+    "email",
+    "cli",
+    "playwright",
+    "edge",
+    "agents"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "owa": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "playwright-core": "^1.50.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  },
+  "files": [
+    "dist",
+    "skill",
+    "README.md",
+    "LICENSE"
+  ]
+}
