@@ -79,7 +79,7 @@ Puedes tener varias cuentas con `--session <nombre>`. La sesión por defecto se 
 | `owa status [--session S]` | Comprueba una sesión en headless |
 | `owa keepalive [--session S \| --all]` | Abre Outlook unos segundos para que renueve sus tokens |
 | `owa logout --session S [--local-only]` | Cierra la sesión en Microsoft y borra su perfil |
-| `owa probe [--session S] [--seconds 25]` | Diagnóstico: qué peticiones hace Outlook Web y cómo se autentican (JSON, sin tokens) |
+| `owa probe [--session S] [--seconds 25]` | Diagnóstico: qué peticiones hace Outlook Web y cómo se autentican (JSON, sin tokens; el buzón y el tenant salen tapados) |
 
 ### Correo
 

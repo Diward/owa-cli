@@ -2,6 +2,13 @@ import { launch, OWA_URL, bearerOf, decodeJwtPayload, isServiceResponse, sleep }
 
 const PROBE_SUFFIXES = ['office.com', 'office365.com', 'office.net', 'microsoft.com', 'microsoftonline.com'];
 
+/** Las rutas de OWA y del login pueden llevar el buzón o el id del tenant: se tapan para poder compartir la salida. */
+function redactPath(path: string): string {
+  return path
+    .replace(/[^/@\s]+(@|%40)[^/\s]+/gi, '<email>')
+    .replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, '<guid>');
+}
+
 interface Entry {
   method: string;
   host: string;
@@ -31,10 +38,11 @@ export async function probe(name: string, seconds: number): Promise<unknown> {
           if (!PROBE_SUFFIXES.some((s) => u.hostname === s || u.hostname.endsWith('.' + s))) return;
           const headers = await req.allHeaders().catch(() => req.headers());
           const action = u.searchParams.get('action');
-          const key = [req.method(), u.hostname, u.pathname, action ?? ''].join(' ');
+          const path = redactPath(u.pathname);
+          const key = [req.method(), u.hostname, path, action ?? ''].join(' ');
           let e = entries.get(key);
           if (!e) {
-            e = { method: req.method(), host: u.hostname, path: u.pathname, action, count: 0, auth: new Set(), xHeaders: new Set(), cookies: false, statuses: new Set() };
+            e = { method: req.method(), host: u.hostname, path, action, count: 0, auth: new Set(), xHeaders: new Set(), cookies: false, statuses: new Set() };
             entries.set(key, e);
           }
           e.count++;
@@ -68,7 +76,7 @@ export async function probe(name: string, seconds: number): Promise<unknown> {
 
     const treeVisible = await page.locator('[role="tree"]').first().isVisible().catch(() => false);
     return {
-      finalUrl: page.url().split(/[?#]/)[0], // sin query/fragment: pueden llevar códigos de auth
+      finalUrl: redactPath(page.url().split(/[?#]/)[0]), // sin query/fragment: pueden llevar códigos de auth
       mailboxLoaded: serviceOk || treeVisible,
       seconds,
       requests: [...entries.values()]

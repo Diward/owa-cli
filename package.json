@@ -13,6 +13,13 @@
     "agents"
   ],
   "license": "MIT",
+  "author": "Eduardo de Prado",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Diward/owa-cli.git"
+  },
+  "homepage": "https://github.com/Diward/owa-cli#readme",
+  "bugs": "https://github.com/Diward/owa-cli/issues",
   "type": "module",
   "bin": {
     "owa": "dist/cli.js"
